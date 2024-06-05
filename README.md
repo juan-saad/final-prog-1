@@ -1,2 +1,2 @@
-# final-prog-1
-[TUIA - FCEIA] - Trabajo final Programacion 1 
+# TP Final - Programacion 1
+## Tecnicatura en inteligencia artificial - UNR FCEIA
