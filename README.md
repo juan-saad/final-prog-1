@@ -53,3 +53,7 @@ descargarCSV(datosVG2022, "datosVG2022.csv")
 1. Escribir una función *crearEstadisticasAnualDesdeArchivo* que reciba el nombre de un archivo (con el formato publicado de la linea 144) y devuelva:
    - un diccionario donde las claves sean las provincias argentinas desde donde se realizaron llamadas ese año a la linea 144 y los valores son la cantidad de llamadas que recibió cada provincia en dicho año, y
    - el promedio de edades de las personas que llamaron a esa línea durante todo el año (como valor entero)
+
+## Agradecimientos
+
+Agradecemos a todas las personas que han contribuido a este proyecto. [¡Ve nuestros contribuidores!](https://github.com/usuario/repositorio/contributors)
