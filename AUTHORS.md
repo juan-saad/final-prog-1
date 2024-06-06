@@ -1,4 +1,5 @@
 # Autores
 
 - **Juan Manuel Saad** - [juan-saad](https://github.com/juan-saad)
-- **Nombre del Autor 2** - [Perfil de GitHub](https://github.com/usuario2)
+- **Lautaro Vollmer** - [Perfil de GitHub](https://github.com/lautarovollmer)
+- **Ulises Scardino** - [Perfil de GitHub](https://github.com/ulises2125)
