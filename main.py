@@ -50,9 +50,27 @@ def crearEstadisticasAnualDesdeArchivo(
           que es el promedio de edades de las personas que llamaron a esa línea durante todo el año
     """
 
-    ###completar
-    pass
+    with open(nombre_archivo) as archivo:
+        anios = obtenerAnios(nombre_archivo)
+        if (len(anios) == 0 or anio not in anios):
+            return None        
+        contar_provincias = {} 
+        lineas = archivo.readlines()
+        for i, linea in enumerate(lineas):
+            if(linea != '\n' and i > 0):
+                lista_lineas = linea.split(",")
+                provincia = lista_lineas[1]
+                
+                provincia_existente = contar_provincias.get(provincia)
+                
+                if provincia_existente:
+                    contar_provincias[provincia] += 1
+                else:
+                    contar_provincias[provincia] = 1
+                    
+        print(contar_provincias)
 
 lista = ["./datos/datosVG2020.csv","./datos/datosVG2021.csv","./datos/datosVG2022.csv"]
 fusionarArchivosCSV(lista,"./datos/datos_filtrados.csv")
 obtenerAnios("./datos/datos_filtrados.csv")
+crearEstadisticasAnualDesdeArchivo("./datos/datos_filtrados.csv", 2022)
