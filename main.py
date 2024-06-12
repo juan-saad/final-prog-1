@@ -1,4 +1,5 @@
 import csv
+import os
 
 
 def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) -> None:
@@ -7,8 +8,25 @@ def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) 
     publicado de la linea 144) y genera un nuevo archivo en memoria con todos los contenidos de los archivos
     recien mencionados. No devuelve nada.
     """
-    # completar
-    pass
+
+    # Si el archivo ya existe, no se debe crear nada
+    if os.path.exists(archivo_salida):
+        return
+
+    # Abrir el archivo de salida en modo de escritura
+    with open(archivo_salida, "w", encoding="utf-8") as archivo_fusionado:
+        # Bucle para procesar cada archivo de la lista de entrada
+        for i, archivo in enumerate(lista_archivos_entrada):
+            with open(archivo, "r", encoding="utf-8") as f:
+                # Leer todas las líneas del archivo
+                lineas = f.readlines()
+                # Escribir las líneas en el archivo de salida
+                if i == 0:
+                    # Escribir todas las líneas, incluyendo la cabecera para el primer archivo
+                    archivo_fusionado.writelines(lineas)
+                else:
+                    # Omitir la primera línea (cabecera) para los archivos subsiguientes
+                    archivo_fusionado.writelines(lineas[1:])
 
 
 def obtenerAnios(nombre_archivo: str) -> list[int]:
@@ -17,8 +35,22 @@ def obtenerAnios(nombre_archivo: str) -> list[int]:
     publicado de la linea 144) y devuelve la lista de años que aparecen en el archivo
     """
 
-    ###completar
-    pass
+    # Si el archivo no existe devuelve una lista vacia
+    if not os.path.exists(nombre_archivo):
+        return []
+
+    with open(nombre_archivo, "r", encoding="utf-8-sig") as archivo:
+        lector = csv.reader(archivo)
+        anios = set()
+
+        # Omitir el encabezado
+        next(lector, None)
+
+        for fila in lector:
+            if fila:
+                anios.add(int(fila[0][:4]))
+
+        return list(anios)
 
 
 def crearEstadisticasAnualDesdeArchivo(
@@ -39,6 +71,13 @@ def crearEstadisticasAnualDesdeArchivo(
     pass
 
 
-help(crearEstadisticasAnualDesdeArchivo)
-help(obtenerAnios)
-help(fusionarArchivosCSV)
+lista_de_archivos = [
+    "./datos/datosVG2020.csv",
+    "./datos/datosVG2021.csv",
+    "./datos/datosVG2022.csv",
+]
+
+fusionarArchivosCSV(lista_de_archivos, "./datos/datos_filtrados.csv")
+anios = obtenerAnios("./datos/datos_filtrados.csv")
+
+print(anios)
