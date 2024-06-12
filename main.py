@@ -7,8 +7,14 @@ def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) 
     publicado de la linea 144) y genera un nuevo archivo en memoria con todos los contenidos de los archivos
     recien mencionados. No devuelve nada.
     """
-    # completar
-    pass
+    with open(archivo_salida, 'w') as salida:
+        for i,archivo in enumerate(lista_archivos_entrada):
+            with open(archivo) as entrada:
+                #si el indice es 0, copie todo el archivo, sino que me saltee la primer linea
+                if(i == 0):  
+                    salida.writelines(entrada.readlines())
+                else:
+                    salida.writelines(entrada.readlines()[1:])
 
 
 def obtenerAnios(nombre_archivo: str) -> list[int]:
@@ -17,8 +23,17 @@ def obtenerAnios(nombre_archivo: str) -> list[int]:
     publicado de la linea 144) y devuelve la lista de años que aparecen en el archivo
     """
 
-    ###completar
-    pass
+    with open(nombre_archivo) as archivo:
+        lineas = archivo.readlines()
+        lista_anios = []
+        for i,linea in enumerate(lineas):
+            #obtengo el anio del archivo
+            anio = linea.split(",")[0].split('-')[0]
+            if(linea != '\n' and i > 0 and anio not in lista_anios):
+                lista_anios.append(anio)
+        #transformo en entero los anios de la lista agregada
+        lista_anios = map(lambda x: int(x), lista_anios)
+        return list(lista_anios)
 
 
 def crearEstadisticasAnualDesdeArchivo(
@@ -38,7 +53,6 @@ def crearEstadisticasAnualDesdeArchivo(
     ###completar
     pass
 
-
-help(crearEstadisticasAnualDesdeArchivo)
-help(obtenerAnios)
-help(fusionarArchivosCSV)
+lista = ["./datos/datosVG2020.csv","./datos/datosVG2021.csv","./datos/datosVG2022.csv"]
+fusionarArchivosCSV(lista,"./datos/datos_filtrados.csv")
+obtenerAnios("./datos/datos_filtrados.csv")
