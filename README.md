@@ -56,4 +56,4 @@ descargarCSV(datosVG2022, "datosVG2022.csv")
 
 ## Agradecimientos
 
-Agradecemos a todas las personas que han contribuido a este proyecto. [¡Ve nuestros contribuidores!](https://github.com/usuario/repositorio/contributors)
+Agradecemos a todas las personas que han contribuido a este proyecto. [¡Ve nuestros contribuidores!](https://github.com/juan-saad/final-prog-1/contributors)
