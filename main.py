@@ -39,7 +39,7 @@ def obtenerAnios(nombre_archivo: str) -> list[int]:
     if not os.path.exists(nombre_archivo):
         return []
 
-    with open(nombre_archivo, "r", encoding="utf-8-sig") as archivo:
+    with open(nombre_archivo, "r", encoding="utf-8") as archivo:
         lector = csv.reader(archivo)
         anios = set()
 
