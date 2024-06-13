@@ -61,21 +61,27 @@ def crearEstadisticasAnualDesdeArchivo(
             return None
         
         contar_provincias = {}
+        promedios_edades = 0
         lineas = archivo.readlines()
-        
+        lista_edades = []
         for i, linea in enumerate(lineas):
             if linea != "\n" and i > 0:
                 lista_lineas = linea.split(",")
                 provincia = lista_lineas[1]
-
+                edad = lista_lineas[3]
                 provincia_existente = contar_provincias.get(provincia)
-
                 if provincia_existente:
                     contar_provincias[provincia] += 1
                 else:
                     contar_provincias[provincia] = 1
+                if(edad):
+                    print(i)
+                    int(edad)
+                    #lista_edades.append(edad)
+        #print(lista_edades,"edades")
 
-        print(contar_provincias)
+
+        #print(contar_provincias)
 
 
 lista = [
@@ -83,6 +89,7 @@ lista = [
     "./datos/datosVG2021.csv",
     "./datos/datosVG2022.csv",
 ]
+
 fusionarArchivosCSV(lista, "./datos/datos_filtrados.csv")
 obtenerAnios("./datos/datos_filtrados.csv")
 crearEstadisticasAnualDesdeArchivo("./datos/datos_filtrados.csv", 2022)
