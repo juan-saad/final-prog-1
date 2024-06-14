@@ -16,7 +16,7 @@ A lo largo de tres semanas, trabajarán en la lectura, manipulación y análisis
 
 ## Consignas Semana 1
 
-1. Descargar los archivos  `datosVG2020.csv`, `datosVG2021.csv` y `datosVG2022.csv` ejectundo el código que se le propone a continuación
+1. Descargar los archivos `datosVG2020.csv`, `datosVG2021.csv` y `datosVG2022.csv` ejectundo el código que se le propone a continuación
 
 ```python
 # No modificar este código que le permitirá bajar los archivos que necesita para trabajar
@@ -44,15 +44,103 @@ descargarCSV(datosVG2021, "datosVG2021.csv")
 descargarCSV(datosVG2022, "datosVG2022.csv")
 ```
 
-1. Escribir una función `fusionarArchivosCSV` que tomando una lista de nombres de archivos (con el formato publicado de la linea 144), genere un nuevo archivo con el mismo formato con los datos de los archivos anteriores exceptuando aquellos registros con `fecha` y/o `prov_residencia_persona_en_situacion_violencia` nulos.
+2. Escribir una función `fusionarArchivosCSV` que tomando una lista de nombres de archivos (con el formato publicado de la linea 144), genere un nuevo archivo con el mismo formato con los datos de los archivos anteriores exceptuando aquellos registros con `fecha` y/o `prov_residencia_persona_en_situacion_violencia` nulos.
 
-1. Invocar a la función `fusionarArchivosCSV` con un lista con los nombres `datosVG2020.csv`, `datosVG2021.csv` y `datosVG2022.csv` y generar un nuevo archivo llamado `datos_filtrados.csv`
+3. Invocar a la función `fusionarArchivosCSV` con un lista con los nombres `datosVG2020.csv`, `datosVG2021.csv` y `datosVG2022.csv` y generar un nuevo archivo llamado `datos_filtrados.csv`
 
-1. Escribir una función *obtenerAnios* que reciba el nombre de un archivo (con el formato publicado de la linea 144) y devuelva la lista de años que aparecen en el archivo.
+4. Escribir una función _obtenerAnios_ que reciba el nombre de un archivo (con el formato publicado de la linea 144) y devuelva la lista de años que aparecen en el archivo.
 
-1. Escribir una función *crearEstadisticasAnualDesdeArchivo* que reciba el nombre de un archivo (con el formato publicado de la linea 144) y devuelva:
+5. Escribir una función _crearEstadisticasAnualDesdeArchivo_ que reciba el nombre de un archivo (con el formato publicado de la linea 144) y devuelva:
    - un diccionario donde las claves sean las provincias argentinas desde donde se realizaron llamadas ese año a la linea 144 y los valores son la cantidad de llamadas que recibió cada provincia en dicho año, y
    - el promedio de edades de las personas que llamaron a esa línea durante todo el año (como valor entero)
+
+## Consignas Semana 2
+
+6. Definir una clase EstadisticasAnual con los siguientes atributos:
+
+   - `anio`: año asociado a la clase,
+   - `cant_llamadas_por_provincia`: diccionario donde las claves son las provincias argentinas desde donde se realizaron llamadas el año `anio` a la linea 144 y los valores son la cantidad de llamadas que recibió cada provincia en dicho año
+   - `promedio_edades`: que es el promedio de edades de las personas que llamaron a esa linea durante el año anio (como valor entero)
+
+   y los siguientes métodos:
+
+   - `__init__`
+   - `get_anio`
+   - `get_cant_llamadas_por_provincia`
+   - `get_promedio_edad_llamantes`
+   - `__str__`
+
+```python
+"""
+La clase EstadisticasAnual se utilizará para mantener información sobre
+estadísticas de Situaciones de Violencia en Argentina en un año en particular
+"""
+
+class EstadisticasAnual:
+  def __init__(self, anio: int, cant_llamadas_por_provincia:dict[str,int], promedio_edad_llamantes: int):
+    pass
+
+  def getAnio(self) -> int:
+    pass
+
+  def getCantLlamadasPorProvincia(self) -> dict[str,int]:
+    pass
+
+  def getPromedioEdadLlamantes(self) -> int:
+    pass
+
+  def __str__(self)->str:
+    pass
+```
+
+7. Escribir una función crearObjetosEstadisticasAnual que tome el nombre de un archivo y devuelva una lista de objetos de la clase `EstadisticasAnual`, donde cada objeto contiene información de cada año del cual se disponen datos en el archivo. Debe invocar a las funciones `obtenerAnios` y `crearEstadisticasAnualDesdeArchivo`.
+
+8. Invocar a la función anterior con el nombre de archivo `datos_filtrados.csv`.
+
+## Consignas Semana 3
+
+9. Agregar el método `graficarLLamadasPorProvincia` a la clase `EstadisticasAnual` que muestre en un gráfico de barras la cantidad de llamadas que se hicieron en el año en cuestión desde cada provincia.
+
+10. Realizar las gráficas para los años que se disponen de datos invocando a este método a partir de los objetos creados en el punto 8.
+
+11. Definir una nueva clase `EstadisticasViolencia` con el atributo:
+
+    - `estadisticasAnuales`lista de objetos de la clase `EstadisticasAnual`
+
+    y los siguientes métodos:
+
+    - `__init__`
+    - `compararPromediosEdadesPorAnio`
+    - `minimaEdadPromedio`
+    - `compararGráficamenteDosAnios`
+    - `__str__`
+
+```python
+"""
+La clase EstadisticasViolencia se utilizará para mantener información sobre
+estadísticas de Situaciones de Violencia en Argentina, para todos los años
+que se disponga de datos
+"""
+class EstadisticasViolencia:
+  def __init__(self, estadisticasAnuales: list[EstadisticasAnual]):
+    pass
+
+  def compararPromediosEdadesPorAnio(self):
+    pass
+
+  def minimaEdadPromedioyAnio(self):
+    pass
+
+  def compararGraficamenteDosAnios(self,anio1, anio2):
+    pass
+
+  def __str__(self):
+    pass
+```
+
+12. Crear un objeto instanciando la clase `EstadisticasViolencia` que contenga los datos de todos los años disponibles.
+
+13. Invocar a cada uno de los métodos de la clase con el objeto creado en el punto anterior. Compare gráficamente dos años de su elección.
 
 ## Agradecimientos
 
