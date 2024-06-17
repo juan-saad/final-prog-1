@@ -1,5 +1,5 @@
 import csv
-
+import matplotlib.pyplot as plt
 
 def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) -> None:
     """
@@ -70,7 +70,7 @@ def crearEstadisticasAnualDesdeArchivo(
 
         for fila in lector:
             if fila and int(fila[0][:4]) == anio:
-                provincia = fila[1]
+                provincia = fila[1] if fila[1] != '' else 'Sin especificar'
                 edad = fila[3]
                 provincia_existente = contar_provincias.get(provincia)
 
@@ -83,7 +83,6 @@ def crearEstadisticasAnualDesdeArchivo(
                     lista_edades.append(int(edad))
 
         promedios_edades = sum(lista_edades) / len(lista_edades)
-
         return contar_provincias, promedios_edades
 
 
@@ -113,6 +112,17 @@ class EstadisticasAnual:
     def get_promedio_edad_llamantes(self) -> int:
         return self._promedio_edad_llamantes
 
+    def graficarLLamadasPorProvincia(self):
+        lista_x = list(self._cant_llamadas_por_provincia.keys())
+        lista_y = list(self._cant_llamadas_por_provincia.values())
+        plt.figure(figsize = (15,8))
+        plt.title('Estadisticas anuales',fontsize=25)
+        plt.bar(lista_x, lista_y)
+        plt.xlabel('Provincias', fontsize=15)
+        plt.ylabel('Cantidad de llamadas', fontsize=15)
+        plt.xticks(rotation=90)
+        plt.show()
+
     def __str__(self) -> str:
         return (
             f"Año: {self._anio}\n"
@@ -123,13 +133,39 @@ class EstadisticasAnual:
 
 def crearObjetosEstadisticasAnual(nombre_archivo: str) -> list[EstadisticasAnual]:
     anios = obtenerAnios(nombre_archivo)
-    estadistica_anual = []
+    lista_estadistica_anual = []
 
     for anio in anios:
         resultado = crearEstadisticasAnualDesdeArchivo(nombre_archivo, anio)
-        estadistica_anual.append(EstadisticasAnual(anio, resultado[0], resultado[1]))
+        estadistica_anual = EstadisticasAnual(anio, resultado[0], resultado[1])
+        lista_estadistica_anual.append(estadistica_anual)
+        estadistica_anual.graficarLLamadasPorProvincia()
 
-    return estadistica_anual
+    return lista_estadistica_anual
+
+
+
+
+"""
+La clase EstadisticasViolencia se utilizará para mantener información sobre
+estadísticas de Situaciones de Violencia en Argentina, para todos los años
+que se disponga de datos
+"""
+class EstadisticasViolencia:
+  def __init__(self, estadisticas_anuales: list[EstadisticasAnual]):
+    self._estadisticas_anuales = estadisticas_anuales
+
+  def comparar_promedios_edades_por_anio(self):
+    self._estadisticas_anuales 
+
+  def minima_edad_promedioyAnio(self):
+    pass
+
+  def comparar_graficamente_dos_anios(self,anio1, anio2):
+    pass
+
+  def __str__(self):
+    pass
 
 
 # -------------------- Proceso principal ---------------------
