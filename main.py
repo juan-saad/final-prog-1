@@ -1,6 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
 
+
 def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) -> None:
     """
     fusionarArchivosCSV recibe una lista con los nombres de los archivos a fusionar archivo (con el formato
@@ -70,7 +71,7 @@ def crearEstadisticasAnualDesdeArchivo(
 
         for fila in lector:
             if fila and int(fila[0][:4]) == anio:
-                provincia = fila[1] if fila[1] != '' else 'Sin especificar'
+                provincia = fila[1] if fila[1] != "" else "Sin especificar"
                 edad = fila[3]
                 provincia_existente = contar_provincias.get(provincia)
 
@@ -86,13 +87,12 @@ def crearEstadisticasAnualDesdeArchivo(
         return contar_provincias, promedios_edades
 
 
-"""
-La clase EstadisticasAnual se utilizará para mantener información sobre
-estadísticas de Situaciones de Violencia en Argentina en un año en particular
-"""
-
-
 class EstadisticasAnual:
+    """
+    La clase EstadisticasAnual se utilizará para mantener información sobre
+    estadísticas de Situaciones de Violencia en Argentina en un año en particular
+    """
+
     def __init__(
         self,
         anio: int,
@@ -115,11 +115,12 @@ class EstadisticasAnual:
     def graficar_llamadas_por_provincia(self):
         lista_x = list(self._cant_llamadas_por_provincia.keys())
         lista_y = list(self._cant_llamadas_por_provincia.values())
-        plt.figure(figsize = (15,8))
-        plt.title('Estadisticas anuales',fontsize=25)
+
+        plt.figure(figsize=(15, 8))
+        plt.title("Estadisticas anuales", fontsize=25)
         plt.bar(lista_x, lista_y)
-        plt.xlabel('Provincias', fontsize=15)
-        plt.ylabel('Cantidad de llamadas', fontsize=15)
+        plt.xlabel("Provincias", fontsize=15)
+        plt.ylabel("Cantidad de llamadas", fontsize=15)
         plt.xticks(rotation=90)
         plt.show()
 
@@ -139,11 +140,9 @@ def crearObjetosEstadisticasAnual(nombre_archivo: str) -> list[EstadisticasAnual
         resultado = crearEstadisticasAnualDesdeArchivo(nombre_archivo, anio)
         estadistica_anual = EstadisticasAnual(anio, resultado[0], resultado[1])
         lista_estadistica_anual.append(estadistica_anual)
-        #estadistica_anual.graficar_llamadas_por_provincia()
+        estadistica_anual.graficar_llamadas_por_provincia()
 
     return lista_estadistica_anual
-
-
 
 
 """
@@ -151,41 +150,53 @@ La clase EstadisticasViolencia se utilizará para mantener información sobre
 estadísticas de Situaciones de Violencia en Argentina, para todos los años
 que se disponga de datos
 """
+
+
 class EstadisticasViolencia:
-  def __init__(self, estadisticas_anuales: list[EstadisticasAnual]):
-    self._estadisticas_anuales = estadisticas_anuales
+    def __init__(self, estadisticas_anuales: list[EstadisticasAnual]):
+        self._estadisticas_anuales = estadisticas_anuales
 
-  def comparar_promedios_edades_por_anio(self) -> dict[int, int]:
-    promedio_edad = {}
-    for estadistica in self._estadisticas_anuales:
-        promedio_edad[estadistica.get_anio()] = estadistica.get_promedio_edad_llamantes()
-    return promedio_edad
+    def comparar_promedios_edades_por_anio(self) -> dict[int, int]:
+        promedio_edad = {}
 
-  def minima_edad_promedio_y_anio(self):
-    promedio_edades = self.comparar_promedios_edades_por_anio()
-    minimo_promedio = (min(promedio_edades, key=promedio_edades.get),min(promedio_edades.values()))
-    return minimo_promedio
+        for estadistica in self._estadisticas_anuales:
+            promedio_edad[estadistica.get_anio()] = (
+                estadistica.get_promedio_edad_llamantes()
+            )
 
-  def comparar_graficamente_dos_anios(self,anio1, anio2):
-    lista_x = [str(anio1),str(anio2)]
-    for estadistica in self._estadisticas_anuales:
-        if(estadistica.get_anio() == anio1 ):
-            estadistica_anio1 = estadistica
-        if(estadistica.get_anio() == anio2):
-            estadistica_anio2 = estadistica
-        
-    suma_anio_1 = sum(estadistica_anio1.get_cant_llamadas_por_provincia().values())
-    suma_anio_2 = sum(estadistica_anio2.get_cant_llamadas_por_provincia().values())
-    lista_y = [suma_anio_1,suma_anio_2]
-    plt.figure(figsize = (15,6))
-    plt.title('Estadisticas anuales',fontsize=25)
-    plt.bar(lista_x, lista_y, color=['blue', 'red']) 
-    plt.xlabel('Años', fontsize=15)
-    plt.ylabel('Cantidad de llamadas', fontsize=15)
-    plt.show()
+        return promedio_edad
 
-  def __str__(self):
-    pass
+    def minima_edad_promedio_y_anio(self):
+        promedio_edades = self.comparar_promedios_edades_por_anio()
+        minimo_promedio = (
+            min(promedio_edades, key=promedio_edades.get),
+            min(promedio_edades.values()),
+        )
+        return minimo_promedio
+
+    def comparar_graficamente_dos_anios(self, anio1, anio2):
+        lista_x = [str(anio1), str(anio2)]
+
+        for estadistica in self._estadisticas_anuales:
+            if estadistica.get_anio() == anio1:
+                estadistica_anio1 = estadistica
+            if estadistica.get_anio() == anio2:
+                estadistica_anio2 = estadistica
+
+        suma_anio_1 = sum(estadistica_anio1.get_cant_llamadas_por_provincia().values())
+        suma_anio_2 = sum(estadistica_anio2.get_cant_llamadas_por_provincia().values())
+
+        lista_y = [suma_anio_1, suma_anio_2]
+
+        plt.figure(figsize=(15, 6))
+        plt.title("Estadisticas anuales", fontsize=25)
+        plt.bar(lista_x, lista_y, color=["blue", "red"])
+        plt.xlabel("Años", fontsize=15)
+        plt.ylabel("Cantidad de llamadas", fontsize=15)
+        plt.show()
+
+    def __str__(self):
+        pass
 
 
 # -------------------- Proceso principal ---------------------
@@ -199,4 +210,4 @@ lista = [
 # crearEstadisticasAnualDesdeArchivo("./datos/datos_filtrados.csv", 2022)
 obj = crearObjetosEstadisticasAnual("./datos/datos_filtrados.csv")
 violencia = EstadisticasViolencia(obj)
-violencia.comparar_graficamente_dos_anios(2022,2021)
+violencia.comparar_graficamente_dos_anios(2022, 2021)
