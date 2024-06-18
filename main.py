@@ -112,7 +112,7 @@ class EstadisticasAnual:
     def get_promedio_edad_llamantes(self) -> int:
         return self._promedio_edad_llamantes
 
-    def graficarLLamadasPorProvincia(self):
+    def graficar_llamadas_por_provincia(self):
         lista_x = list(self._cant_llamadas_por_provincia.keys())
         lista_y = list(self._cant_llamadas_por_provincia.values())
         plt.figure(figsize = (15,8))
@@ -139,7 +139,7 @@ def crearObjetosEstadisticasAnual(nombre_archivo: str) -> list[EstadisticasAnual
         resultado = crearEstadisticasAnualDesdeArchivo(nombre_archivo, anio)
         estadistica_anual = EstadisticasAnual(anio, resultado[0], resultado[1])
         lista_estadistica_anual.append(estadistica_anual)
-        estadistica_anual.graficarLLamadasPorProvincia()
+        #estadistica_anual.graficar_llamadas_por_provincia()
 
     return lista_estadistica_anual
 
@@ -155,14 +155,34 @@ class EstadisticasViolencia:
   def __init__(self, estadisticas_anuales: list[EstadisticasAnual]):
     self._estadisticas_anuales = estadisticas_anuales
 
-  def comparar_promedios_edades_por_anio(self):
-    self._estadisticas_anuales 
+  def comparar_promedios_edades_por_anio(self) -> dict[int, int]:
+    promedio_edad = {}
+    for estadistica in self._estadisticas_anuales:
+        promedio_edad[estadistica.get_anio()] = estadistica.get_promedio_edad_llamantes()
+    return promedio_edad
 
-  def minima_edad_promedioyAnio(self):
-    pass
+  def minima_edad_promedio_y_anio(self):
+    promedio_edades = self.comparar_promedios_edades_por_anio()
+    minimo_promedio = (min(promedio_edades, key=promedio_edades.get),min(promedio_edades.values()))
+    return minimo_promedio
 
   def comparar_graficamente_dos_anios(self,anio1, anio2):
-    pass
+    lista_x = [str(anio1),str(anio2)]
+    for estadistica in self._estadisticas_anuales:
+        if(estadistica.get_anio() == anio1 ):
+            estadistica_anio1 = estadistica
+        if(estadistica.get_anio() == anio2):
+            estadistica_anio2 = estadistica
+        
+    suma_anio_1 = sum(estadistica_anio1.get_cant_llamadas_por_provincia().values())
+    suma_anio_2 = sum(estadistica_anio2.get_cant_llamadas_por_provincia().values())
+    lista_y = [suma_anio_1,suma_anio_2]
+    plt.figure(figsize = (15,6))
+    plt.title('Estadisticas anuales',fontsize=25)
+    plt.bar(lista_x, lista_y, color=['blue', 'red']) 
+    plt.xlabel('Años', fontsize=15)
+    plt.ylabel('Cantidad de llamadas', fontsize=15)
+    plt.show()
 
   def __str__(self):
     pass
@@ -177,4 +197,6 @@ lista = [
 # fusionarArchivosCSV(lista, "./datos/datos_filtrados.csv")
 # obtenerAnios("./datos/datos_filtrados.csv")
 # crearEstadisticasAnualDesdeArchivo("./datos/datos_filtrados.csv", 2022)
-crearObjetosEstadisticasAnual("./datos/datos_filtrados.csv")
+obj = crearObjetosEstadisticasAnual("./datos/datos_filtrados.csv")
+violencia = EstadisticasViolencia(obj)
+violencia.comparar_graficamente_dos_anios(2022,2021)
