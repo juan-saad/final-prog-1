@@ -71,6 +71,7 @@ def crearEstadisticasAnualDesdeArchivo(
 
         for fila in lector:
             if fila and int(fila[0][:4]) == anio:
+                # Existen registros donde no se especifica la provincia
                 provincia = fila[1] if fila[1] != "" else "Sin especificar"
                 edad = fila[3]
                 provincia_existente = contar_provincias.get(provincia)
