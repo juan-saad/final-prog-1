@@ -56,7 +56,7 @@ class EstadisticasViolencia:
 
     def __init__(self, estadisticas_anuales: list[EstadisticasAnual]):
         self._estadisticas_anuales = estadisticas_anuales
-   
+
     def comparar_promedios_edades_por_anio(self) -> dict[int, int]:
         """
         devuelve un diccionario con el anio como clave y el promedio de edad como valor
@@ -70,7 +70,7 @@ class EstadisticasViolencia:
 
         return promedio_edad
 
-    def minima_edad_promedio_y_anio(self) -> tuple[int,int]:
+    def minima_edad_promedio_y_anio(self) -> tuple[int, int]:
         """
         devuelve una tupla donde el primer valor es el año y el valor es el menor promedio de edades
         """
@@ -109,7 +109,6 @@ class EstadisticasViolencia:
         return estadisticas_str
 
 
-
 def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) -> None:
     """
     fusionarArchivosCSV recibe una lista con los nombres de los archivos a fusionar archivo (con el formato
@@ -119,7 +118,7 @@ def fusionarArchivosCSV(lista_archivos_entrada: list[str], archivo_salida: str) 
     with open(archivo_salida, "w") as salida:
         for i, archivo in enumerate(lista_archivos_entrada):
             with open(archivo) as entrada:
-                # si el indice es 0, copie todo el archivo, sino que me saltee la primer linea
+                # Si el indice es 0, copie todo el archivo, sino que me saltee la primer linea
                 if i == 0:
                     salida.writelines(entrada.readlines())
                 else:
@@ -137,13 +136,13 @@ def obtenerAnios(nombre_archivo: str) -> list[int]:
         lista_anios = []
 
         for i, linea in enumerate(lineas):
-            # obtengo el anio del archivo
+            # Obtengo el año del archivo
             anio = linea.split(",")[0].split("-")[0]
 
             if linea != "\n" and i > 0 and anio not in lista_anios:
                 lista_anios.append(anio)
 
-        # transformo en entero los anios de la lista agregada
+        # Transformo en entero los anios de la lista agregada
         lista_anios = map(lambda x: int(x), lista_anios)
 
         return list(lista_anios)
@@ -172,7 +171,7 @@ def crearEstadisticasAnualDesdeArchivo(
     lista_edades = []
 
     with open(nombre_archivo, encoding="utf-8") as archivo:
-        # lector que procesa lineas del archvio
+        # Lector que procesa las lineas del archvio
         lector = csv.reader(archivo)
 
         # Omitir el encabezado
@@ -184,7 +183,8 @@ def crearEstadisticasAnualDesdeArchivo(
                 provincia = fila[1] if fila[1] != "" else "Sin especificar"
                 edad = fila[3]
                 provincia_existente = contar_provincias.get(provincia)
-                # si la provncia no existe en el diccionario inicializo el contador
+
+                # Si la provncia no existe en el diccionario inicializo el contador
                 if provincia_existente:
                     contar_provincias[provincia] += 1
                 else:
@@ -197,15 +197,17 @@ def crearEstadisticasAnualDesdeArchivo(
         return contar_provincias, promedios_edades
 
 
-
-
 def crearObjetosEstadisticasAnual(nombre_archivo: str) -> list[EstadisticasAnual]:
     anios = obtenerAnios(nombre_archivo)
     lista_estadistica_anual = []
 
     for anio in anios:
-        estadistica_anual_archivo = crearEstadisticasAnualDesdeArchivo(nombre_archivo, anio)
-        estadistica_anual = EstadisticasAnual(anio, estadistica_anual_archivo[0], estadistica_anual_archivo[1])
+        estadistica_anual_archivo = crearEstadisticasAnualDesdeArchivo(
+            nombre_archivo, anio
+        )
+        estadistica_anual = EstadisticasAnual(
+            anio, estadistica_anual_archivo[0], estadistica_anual_archivo[1]
+        )
         lista_estadistica_anual.append(estadistica_anual)
 
     return lista_estadistica_anual
@@ -220,11 +222,16 @@ lista = [
 fusionarArchivosCSV(lista, "./datos/datos_filtrados.csv")
 obtenerAnios("./datos/datos_filtrados.csv")
 crearEstadisticasAnualDesdeArchivo("./datos/datos_filtrados.csv", 2022)
+
 lista_estadisticas = crearObjetosEstadisticasAnual("./datos/datos_filtrados.csv")
-for estadistica in lista_estadisticas:
-    estadistica.graficar_llamadas_por_provincia()
+
 estadistica_violencia = EstadisticasViolencia(lista_estadisticas)
+
 print(estadistica_violencia)
 print(estadistica_violencia.comparar_promedios_edades_por_anio())
 print(estadistica_violencia.minima_edad_promedio_y_anio())
+
+for estadistica in lista_estadisticas:
+    estadistica.graficar_llamadas_por_provincia()
+
 estadistica_violencia.comparar_graficamente_dos_anios(2022, 2021)
